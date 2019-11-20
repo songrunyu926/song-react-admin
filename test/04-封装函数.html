@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <button id="btn1">按钮1</button>
+  <button id="btn2">按钮2</button>
+  <button id="btn3">按钮3</button>
+  <script src="https://cdn.bootcss.com/axios/0.19.0/axios.min.js"></script>
+  <script>
+    //使用axios发送请求
+    const btn1 = document.getElementById('btn1')
+    const btn2 = document.getElementById('btn2')
+    const btn3 = document.getElementById('btn3')
+
+    let token = ''
+
+    //使用axios.create方法 创建一个axios对象 里面可以配置一些公共配置
+    //axiosInstance 就是axios的实例 用法基本一致
+    const axiosInstance = axios.create({
+      baseURL: 'http://localhost:5000/api/',
+      timeout: 10000,  //发送请求的限制时间
+      headers: {
+        //公共的请求头
+      }
+    })
+
+    //axios请求拦截器  请求拦截器: 在axios发送请求之前触发的拦截器回调函数
+    axiosInstance.interceptors.request.use(config => {
+      // 将要发送请求是成功的（内部没有出错）触发回调函数 
+      //功能就是修改请求信息
+      //console.log(config)
+      //1 当post请求时，请求参数格式为 x-www-form-urlencoded
+      if(config.method === 'post'){
+        config.headers['content-type'] = 'application/x-www-form-urlencoded'
+        //修改data 数据变成字符串  让我们可以传入对象
+        config.data = Object.keys(config.data).reduce((p,key) => {
+          const value = config.data[key]
+          return p + `&${key}=${value}`
+        },'').substring(1)
+      }
+      //当有token时，自动传入token
+      if(token){
+        config.headers.authorization = 'Bearer ' + token
+      }
+    return config;
+    },error => {
+    return Promise.reject(error);
+    });
+
+    //axios响应拦截器  响应拦截器: 在浏览器接收响应之前触发的拦截器回调函数
+    //统一处理失败错误
+    axiosInstance.interceptors.response.use(response => {
+      //响应成功之前 调用的回调
+      //可以处理响应数据
+      if(response.data.status === 0){
+        return response.data.data
+      }else {
+        alert(response.data.msg)
+        return Promise.reject(response.data.msg)
+      }
+    },error => {
+       /*
+          服务器没开 Network Error ---> error.message
+          请求超时 timeout of 1000ms exceeded 
+          没网 Network Error
+
+          error.response 如果有值，服务器返回了响应 / 如果没有值，服务器没有返回响应
+          error.response.status 401 没有携带token
+          407 token过期或失效
+          404 资源找不到
+          403 禁止访问
+          500 服务器内部错误
+        */
+
+        const codeMessage = {
+          401: '没有权限访问接口',
+          403: '禁止访问',
+          404: '资源不存在',
+          500: '服务器故障了，稍后重试'
+        }
+
+        let errorMessage = ''
+
+        //先通过error.response  有没有响应  
+        if(error.response) {
+          errorMessage = codeMessage[error.response.status] || '未知错误'
+        }else {
+          if(error.message.indexOf('Network Error')){
+            errorMessage = '网络断开，请检查连接'
+          }else if(error.message.indexOf('timeout')){
+            errorMessage = '太卡了，换个网络'
+          }else{
+            errorMessage = '未知错误'
+          }
+        }
+      alert(errorMessage)
+      return Promise.reject(errorMessage);
+    });
+
+    //封装
+    const reqLogin = (username,password) => {
+      return axiosInstance({
+        method: 'POST',
+        url: 'login',
+        data: {
+          username,
+          password
+        }  
+      })
+    }
+
+    const reqGetCategories = () => {
+      return axiosInstance({
+        method: 'GET',
+        url: 'category/get',
+      })
+    }
+
+    const reqAddCategory = (categoryName) => {
+      return axiosInstance({
+        method: 'POST',
+        url: 'category/add',
+        data: {
+          categoryName
+        }
+      })
+    }
+    
+
+    btn1.onclick = () => {
+      reqLogin('admin','admin')
+      .then(res => {
+        console.log( '登陆成功' , res)
+        token = res.token;
+        console.log(res.token)
+      })
+    }
+  
+    btn2.onclick = () => {
+      reqGetCategories()
+      .then(res => {
+          console.log('商品列表展示' , res)
+      })
+    }
+
+    btn3.onclick = () => {
+      reqAddCategory('书籍')
+      .then(res => {
+          console.log('添加分类成功' , res)
+      })
+    }
+  </script>
+</body>
+</html>

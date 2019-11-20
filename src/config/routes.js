@@ -1,6 +1,6 @@
 
 import Home from '../Components/home'
-import Login from '../Components/login'
+import Login from '../containers/login'
 import NotMatch from '../Components/notmatch'
 
 export default [

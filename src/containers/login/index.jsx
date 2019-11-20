@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
-import { Form, Icon, Input, Button, message } from 'antd';
-import axios from 'axios'
+import { Form, Icon, Input, Button} from 'antd';
+import { connect } from 'react-redux'
+import { getUserAsync } from '../../redux/action-creators/user'
+import { setItem } from '../../utils/storage'
+
 
 import logo from './logo.png'
 import './login.less'
@@ -39,21 +42,16 @@ class Login extends Component {
       //console.log(error,value)
       if(!error){
         //发送请求
-        axios.post('http://localhost:5000/api/login',value)
+        const {username,password} = value
+        this.props.getUserAsync(username,password)
           .then((res) => {
-            //请求发送成功 判断返回的内容是否登录成功
-            if(res.data.status === 0){
-              //登陆成功
-              this.props.history.replace('/')
-            }else{
-              //失败使用 antd的一个提示对象来提示错误
-              message.error(res.data.msg)
-              //清空密码input
-              resetFields('password')
-            }
+            //每次登录存入localstorage
+            setItem('user',res)
+            //登陆成功 
+            this.props.history.replace('/')
           })
           .catch(err => {
-            console.log('网络有故障，请刷新试试')
+            resetFields('password')
           })
       }
       resetFields('password')
@@ -114,4 +112,7 @@ class Login extends Component {
 }
 
 //From.create 是一个高阶组件用法  作用： 给Login组件传递from属性 其中一件事是表单校验
-export default Login
+export default connect(
+  null,
+  {getUserAsync}
+)(Login)
