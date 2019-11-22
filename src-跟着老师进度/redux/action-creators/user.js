@@ -1,5 +1,5 @@
 import {reqLogin} from '../../api/index'
-import { GET_USER_SUCCESS, REMOVE_USER_SUCCESS } from '../action-types/user'
+import { GET_USER_SUCCESS } from '../action-types/user'
 
 //同步 返回值就是action对象
 //异步  返回值是一个函数 在里面完成异步操作
@@ -8,12 +8,6 @@ const getUser = data => {
   return {
     type: GET_USER_SUCCESS,
     data
-  }
-}
-//清除 user 数据
-export const removeUser = () => {
-  return {
-    type: REMOVE_USER_SUCCESS
   }
 }
 

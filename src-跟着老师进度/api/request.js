@@ -2,9 +2,6 @@ import axios from 'axios'
 import codeMessage from '../config/codeMessage'
 import {message} from 'antd'
 import store from '../redux/store'
-import {removeItem} from '../utils/storage'
-import { removeUser } from '../redux/action-creators/user'
-import history from '../utils/history'
 
 //使用axios.create方法 创建一个axios对象 里面可以配置一些公共配置
 const axiosInstance = axios.create({
@@ -48,15 +45,6 @@ axiosInstance.interceptors.response.use(({data}) => {
   //先通过error.response  有没有响应  
   if (error.response) {
     errorMessage = codeMessage[error.response.status] || '未知错误'
-    //判断token是不是伪造的 ===> 前端得到的响应状态码是401 根据这个判断
-    if(error.response.status === '401'){
-      //清除localstorage和redux中的token 并跳转到登录页面
-      removeItem('user')
-      //传入一个action对象 清除数据
-      store.dispatch(removeUser())
-      //跳转
-      history.replace('/login')
-    }
   } else {
     if (error.message.indexOf('Network Error')) {
       errorMessage = '网络断开，请检查连接'

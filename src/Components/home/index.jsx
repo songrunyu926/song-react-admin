@@ -1,11 +1,20 @@
 import React, { Component } from 'react'
+import withCkeckLogin from '../../containers/with-check-login/'
 
-export default class Home extends Component {
+import BasicLayout from '../basic-layout'
+
+
+@withCkeckLogin
+class Home extends Component {
   render() {
+
     return (
       <div>
-        Home
+       <BasicLayout></BasicLayout>
       </div>
     )
   }
 }
+
+export default Home
+

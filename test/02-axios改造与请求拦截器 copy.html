@@ -29,6 +29,14 @@
       }
     })
 
+    axios.interceptors.request.use(config => {
+    // Do something before request is sent
+    return config;
+    },error => {
+    // Do something with request error
+    return Promise.reject(error);
+    });
+
     //axios请求拦截器  请求拦截器: 在axios发送请求之前触发的拦截器回调函数
     axiosInstance.interceptors.request.use(config => {
       // 将要发送请求是成功的（内部没有出错）触发回调函数 
