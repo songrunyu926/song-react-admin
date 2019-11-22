@@ -1,20 +1,18 @@
 import React, { Component } from 'react'
-import withCkeckLogin from '../../containers/with-check-login/'
-
-import BasicLayout from '../basic-layout'
+import withCheckLogin from '../../containers/with-check-login/'
 
 
-@withCkeckLogin
+@withCheckLogin
 class Home extends Component {
-  render() {
 
+  render() {
+    //获取用户数据
     return (
       <div>
-       <BasicLayout></BasicLayout>
+        home....
       </div>
     )
   }
 }
 
 export default Home
-

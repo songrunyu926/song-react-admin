@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import withCheckLogin from '../../containers/with-check-login'
+import withCkeckLogin from '../../containers/with-check-login'
 
-@withCheckLogin
+@withCkeckLogin
 class NotMatch extends Component {
   render() {
     return (

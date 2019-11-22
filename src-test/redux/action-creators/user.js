@@ -10,8 +10,7 @@ const getUser = data => {
     data
   }
 }
-
-//清除user数据
+//清除 user 数据
 export const removeUser = () => {
   return {
     type: REMOVE_USER_SUCCESS

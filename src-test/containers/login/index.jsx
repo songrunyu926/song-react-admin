@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
-import { Form, Icon, Input, Button} from 'antd';
+import { Form, Icon, Input, Button } from 'antd';
 import { connect } from 'react-redux'
 import { getUserAsync } from '../../redux/action-creators/user'
 import { setItem } from '../../utils/storage'
-import withCheckLogin from '../with-check-login/'
+import withCheckLogin  from '../with-check-login'
 
 
 import logo from '../../assets/logo.png'
 import './login.less'
 
 @withCheckLogin
-@connect(null,{getUserAsync})
+@connect(null, { getUserAsync })
 @Form.create()
 class Login extends Component {
 
@@ -21,15 +21,15 @@ class Login extends Component {
     //输入完成后的我回调  必须调用  传的值就是错误信息  成功则直接调
     const name = rule.field === 'username' ? '用户名' : '密码'
 
-    if(!value){
+    if (!value) {
       callback(`${name}不能为空`)
-    }else if(value.length <= 4){
+    } else if (value.length <= 4) {
       callback(`${name}必须大于4位`)
-    }else if(value.length > 13){
+    } else if (value.length > 13) {
       callback(`${name}必须小于13位`)
-    }else if(!/\w/.test(value)){
+    } else if (!/\w/.test(value)) {
       callback(`${name}只能包含数字，字母，下划线`)
-    }else{
+    } else {
       callback()
     }
   }
@@ -40,18 +40,18 @@ class Login extends Component {
     //禁止默认事件
     e.preventDefault()
     //表单数据是否验证通过
-    validateFields((error,value) => {
+    validateFields((error, value) => {
       //参数为 错误信息 和 输入的值
       //console.log(error,value)
-      if(!error){
+      if (!error) {
         //发送请求
-        const {username,password} = value
-        this.props.getUserAsync(username,password)
+        const { username, password } = value
+        this.props.getUserAsync(username, password)
           .then((res) => {
             //每次登录存入localstorage
-            setItem('user',res)
+            setItem('user', res)
             //登陆成功 
-            this.props.history.replace('/')
+            this.props.history.push('/')
           })
           .catch(err => {
             resetFields('password')
@@ -63,8 +63,9 @@ class Login extends Component {
 
   render() {
 
-    //传出了一个方法 用于校验表单
-    const { getFieldDecorator} = this.props.form
+
+      //传出了一个方法 用于校验表单
+      const { getFieldDecorator } = this.props.form
 
     return (
       <div className="login">

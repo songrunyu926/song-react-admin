@@ -12,3 +12,9 @@ export const reqLogin = (username,password) => {
 }
 
 
+export const reqGetCategories = () => {
+  return axiosInstance({
+    method: 'GET',
+    url: 'category/get',
+  })
+}

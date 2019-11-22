@@ -1,6 +1,5 @@
-import { GET_USER_SUCCESS,REMOVE_USER_SUCCESS } from '../action-types/user'
+import { GET_USER_SUCCESS, REMOVE_USER_SUCCESS } from '../action-types/user'
 import {getItem} from '../../utils/storage'
-
 
 const initState = getItem('user') || {}
 

@@ -2,7 +2,7 @@ import axios from 'axios'
 import codeMessage from '../config/codeMessage'
 import {message} from 'antd'
 import store from '../redux/store'
-import { removeItem } from '../utils/storage'
+import {removeItem} from '../utils/storage'
 import { removeUser } from '../redux/action-creators/user'
 import history from '../utils/history'
 
@@ -48,18 +48,17 @@ axiosInstance.interceptors.response.use(({data}) => {
 }, error => {
 
   let errorMessage = ''
-  console.dir(error)
+
   //先通过error.response  有没有响应  
   if (error.response) {
     errorMessage = codeMessage[error.response.status] || '未知错误'
-    //在这判断响应状态码是否为401
-    console.log(error.response.status)
+    //判断token是不是伪造的 ===> 前端得到的响应状态码是401 根据这个判断
     if(error.response.status === 401){
-      //token有问题 清空数据
+      //清除localstorage和redux中的token 并跳转到登录页面
       removeItem('user')
-      //用不了高阶组件的方法 使用dispatch
+      //传入一个action对象 清除数据
       store.dispatch(removeUser())
-      //跳转 不能直接使用路由组件属性 去修改配置
+      //跳转
       history.replace('/login')
     }
   } else {
