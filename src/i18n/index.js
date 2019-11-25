@@ -16,10 +16,10 @@ i18n
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     fallbackLng: 'zh-CN',
-    debug: true,
+    debug: false,
 
     interpolation: {
-      escapeValue: false, // not needed for react as it escapes by default
+      escapeValue: false, // react 自动转化 不在使用i18n
     },
   });
 

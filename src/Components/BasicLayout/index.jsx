@@ -18,7 +18,6 @@ class BasicLayout extends Component {
   };
 
   onCollapse = collapsed => {
-    console.log(collapsed);
     this.setState({ collapsed, isDisplay: !this.state.isDisplay });
   };
 

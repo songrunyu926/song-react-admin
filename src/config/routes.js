@@ -3,6 +3,8 @@ import Home from '../Components/home'
 import Login from '../containers/login'
 import NotMatch from '../Components/notmatch'
 import Categories from '../containers/categories'
+import Product from '../Components/product'
+import AddProductForm  from '../Components/product/add-product-form'
 
 
 
@@ -15,6 +17,16 @@ export const AuthRoutes = [
   {
     path: '/categories',
     component: Categories,
+    exact: true
+  },
+  {
+    path: '/product',
+    component: Product,
+    exact: true
+  },
+  {
+    path: '/product/add',
+    component: AddProductForm,
     exact: true
   },
   {

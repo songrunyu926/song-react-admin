@@ -21,7 +21,7 @@ class HeadMain extends Component {
     isFullScreen: false,
     isChinese: this.props.i18n.language === "zh" ? true : false,
     datetime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-    pathname: '',
+    pathname: '',  //存储上一次 的pathname
     title: ''
   }
 
@@ -62,7 +62,7 @@ class HeadMain extends Component {
   };
 
   static getDerivedStateFromProps(nextProp, prevState) {
-    const {pathname} = nextProp.location
+    const {pathname} = nextProp.location  //最新的pathname
 
     if(pathname === prevState.pathname){
       return prevState
@@ -70,24 +70,24 @@ class HeadMain extends Component {
 
     let title = '';
 
-    console.log(menus.length)
     for (let i = 0; i < menus.length; i++) {
       const menu = menus[i];
-      console.log(menu)
       if(menu.children){
         const cMenu = menu.children.find(cMenu => cMenu.path === pathname)
         if(cMenu){
           title = cMenu.title
-          console.log(title)
           break;
         }
       }else {
         if(menu.path === pathname){
           title = menu.title
-          console.log(title)
           break;
         }
       }     
+    }
+
+    if(/^\/product/.test(pathname)){
+      title = "product"
     }
     
     return {
@@ -112,7 +112,6 @@ class HeadMain extends Component {
   //解绑事件
   componentWillUnmount() {
     screenfull.off('change', this.change)
-
     clearInterval(this.timer)
   }
 

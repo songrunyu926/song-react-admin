@@ -29,3 +29,38 @@ export const reqAddCategory = categoryName => {
     }
   })
 }
+
+//删除分类
+export const reqRemoveCategory = categoryId => {
+  return axiosInstance({
+    method: 'POST',
+    url: 'category/delete',
+    data: {
+      categoryId
+    }
+  })
+}
+
+//修改分类
+export const reqUpdateCategory = (categoryId,categoryName) => {
+  return axiosInstance({
+    method: 'POST',
+    url: 'category/update',
+    data: {
+      categoryId,
+      categoryName
+    }
+  })
+}
+
+//获取商品信息数据
+export const reqGetProduct = (pageNum, pageSize) => {
+  return axiosInstance({
+    method: 'GET',
+    url: 'product/list',
+    params: {
+      pageNum,
+      pageSize
+    }
+  })
+}
