@@ -9,7 +9,7 @@ module.exports = override(
   }),
  addLessLoader({
    javascriptEnabled: true,
-   modifyVars: { '@primary-color': '#fd0' },
+   modifyVars: { '@primary-color': '#f40' },
  }),
 
  addDecoratorsLegacy()

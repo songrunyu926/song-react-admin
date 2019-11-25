@@ -1,0 +1,49 @@
+.header-main{ 
+  height: 90px;
+  background-color: #fff;
+  .header-main-top {
+    text-align: right;
+    line-height: 45px;
+    border-bottom: 1px solid #fd0;
+    
+    .lang-btn {
+      margin: 0 10px;
+    }
+    .exit-btn {
+      &:hover {
+        color: red;
+      }
+    }
+   
+  }
+
+  .header-main-bottom {
+    display: flex;
+    line-height: 45px;
+    .title {
+      flex: 1;
+      font-size: 24px;
+      text-align: center;
+      position: relative;
+      &::before {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -29px;
+        border-top: 15px solid #fff;
+        border-bottom: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-left: 15px solid transparent;
+      }
+    }
+    .time {
+      flex: 2;
+      text-align: right;
+      padding-right: 30px;
+    }
+
+  }
+}

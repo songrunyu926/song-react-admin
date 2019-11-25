@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import { Menu, Icon } from 'antd';
 import logo from '../../../assets/logo.png'
 import { Link,withRouter } from 'react-router-dom'
+import { withTranslation } from 'react-i18next'
 
 
 import './index.less'
 import menus from '../../../config/menus'
 const { SubMenu } = Menu;
 
-
+@withTranslation()
 @withRouter
 class LeftNav extends Component {
 
@@ -17,6 +18,8 @@ class LeftNav extends Component {
   }
 
   createMenus(menus) {
+    //引入t 给所有文本赋值
+    const {t} = this.props;
     return menus.map(menu => {
       //判断有没有children属性
       if (menu.children) {
@@ -25,7 +28,7 @@ class LeftNav extends Component {
           title={
             <span>
               <Icon type={menu.icon} />
-              <span>{menu.title}</span>
+              <span>{t("route." + menu.title)}</span>
             </span>
           }
         >
@@ -40,11 +43,12 @@ class LeftNav extends Component {
   }
   //封装一个遍历的方法
   createCMenus = menu => {
+    const {t} = this.props
     return (
       <Menu.Item key={menu.path}>
         <Link to={menu.path}>
           <Icon type={menu.icon} />
-          <span>{menu.title}</span>
+          <span>{t("route." + menu.title)}</span>
         </Link>
       </Menu.Item>
     );
@@ -75,14 +79,20 @@ class LeftNav extends Component {
     const {pathname} = this.props.location
     //调用方法
     const openKey = this.findOpenKey(menus,pathname)
+
+    const {t} = this.props
+
+    const menusList = this.createMenus(menus);
     return (
       <div>
          <div className="nav-logo" >
          <img src={logo} alt="logo" />
-          <h2>管理菜单</h2>
+          <h2 style={{display: this.props.isDisplay ? 'block' : 'none'}}>
+          {t("admin.title")}
+          </h2>
           </ div>
           <Menu theme="dark" defaultSelectedKeys={[pathname]} defaultOpenKeys={[openKey]} mode="inline">
-            {this.state.menus}
+            {menusList}
           </Menu>
       </div>
     )

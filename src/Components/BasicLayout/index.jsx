@@ -1,35 +1,39 @@
 import React,{ Component } from 'react'
-import { Layout, Breadcrumb} from 'antd';
+import { Layout } from 'antd';
 import LeftNav from './LeftNav'
+import withCheckLogin from '../../containers/with-check-login/'
+import { withRouter } from 'react-router-dom'
+import HeadMain from './headmain/'
 
 
 const { Header, Content, Footer, Sider } = Layout;
 
 
+@withRouter
+@withCheckLogin
 class BasicLayout extends Component {
   state = {
     collapsed: false,
+    isDisplay: true
   };
 
   onCollapse = collapsed => {
     console.log(collapsed);
-    this.setState({ collapsed });
+    this.setState({ collapsed, isDisplay: !this.state.isDisplay });
   };
 
   render() {
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
-          <LeftNav />
+          <LeftNav isDisplay={ this.state.isDisplay } />
         </Sider>
         <Layout>
-          <Header style={{ background: '#fff', padding: 0 }} />
-          <Content style={{ margin: '0 16px' }}>
-            <Breadcrumb style={{ margin: '16px 0' }}>
-              <Breadcrumb.Item>User</Breadcrumb.Item>
-              <Breadcrumb.Item>Bill</Breadcrumb.Item>
-            </Breadcrumb>
-            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+          <Header style={{ background: '#fff', padding: 0 }}>
+            <HeadMain></HeadMain>
+          </Header>
+          <Content style={{ margin: '40px 16px 0 16px' }}>
+            <div style={{ padding: 24, background: '#fff', minHeight: 360}}>
               {this.props.children}
             </div>
           </Content>
