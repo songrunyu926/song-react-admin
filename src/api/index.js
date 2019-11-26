@@ -83,3 +83,44 @@ export const reqAddProduct = ({
     detail
   }
 })
+
+//修改商品信息
+export const reqUpdateProduct = ({
+  productId,
+  name,
+  desc,
+  categoryId,
+  price,
+  detail
+}) => axiosInstance({
+  method: 'POST',
+  url: '/product/update',
+  data: {
+    productId,
+    name,
+    desc,
+    categoryId,
+    price,
+    detail
+  }
+})
+
+//获取单个商品信息数据
+export const reqGetOneProduct = (productId) => axiosInstance({
+  method: 'GET',
+  url: '/product/get',
+  params: {
+    productId
+  }
+})
+
+//改变商品的状态
+export const reqChangeProductStatus = (productId, status) => axiosInstance({
+  method: 'POST',
+  url: 'product/update/status',
+  data: {
+    productId,
+    status
+  }
+})
+

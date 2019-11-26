@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Card, Button, Icon, Table, Select, Input } from 'antd'
-import { reqGetProduct } from '../../api/index'
+import { Card, Button, Icon, Table, Select, Input, message } from 'antd'
+import { reqGetProduct, reqChangeProductStatus } from '../../api/index'
 
 
 
@@ -9,7 +9,6 @@ class Product extends Component {
   state = {
     list: [],
     total: 0,
-    product: {}
   }
 
   getProduct = async (pageNum,pageSize) => {
@@ -24,16 +23,47 @@ class Product extends Component {
     this.props.history.push('/product/add')
   }
 
+
   //修改商品信息按钮的点击事件
   updateProduct = product => {
     return () => {
-      this.setState({
-        product
-      })
-      //需要跳转
-      this.props.history.push('/product/update')
+      //需要跳转 
+      //push的第二个参数可以传参数  组件可以通过location.state 获取这个值
+      //地址后面加上ID -->  为了在更新商品页面刷新时 能够获取商品ID ---> 通过id发送请求获取商品数据
+      this.props.history.push('/product/update/' + product._id,product)
     }
   }
+  //展示商品信息详情的点击事件
+  showDetail = product => {
+    return () => {
+      //跳转到商品详情页面
+      this.props.history.push('/product/' + product._id,product)
+    }
+  }
+
+  //改变商品状态的点击事件
+  changeStatus = product => {
+    return () => {
+      //要获取商品id 和 商品改变后的状态值
+      const productId = product._id
+      const status = 3 - product.status
+      const name = product.name
+      //发送请求
+      reqChangeProductStatus(productId,status)
+        .then(res => {
+          message.success(name + '状态更新成功')
+          //改变本地的状态数据
+          this.setState({
+            list: this.state.list.map(product => {
+              if(product._id === productId){
+                return {...product, status}
+              }
+              return product
+            })
+          })
+        })
+    }
+  } 
 
   componentDidMount() {
     //发送请求 请求商品数据
@@ -57,13 +87,15 @@ class Product extends Component {
       },
       {
         title: '状态',
-        dataIndex: "status",
-        render: () => {
+        //dataIndex: "status", 要去掉 因为render中我们要获取整条数据 改变状态的请求需要商品id
+        render: product => {
+          //要根据当前状态显示
+          const status = product.status
           return (
             <div>
-              <Button type="primary">上架</Button>
+        <Button type="primary" onClick={this.changeStatus(product)}>{status === 1? '上架' : '下架'}</Button>
               &nbsp;&nbsp;
-              已下架
+              {status === 1? '已下架' : '已上架'}
             </div>
           )
         }
@@ -73,8 +105,8 @@ class Product extends Component {
         render: product => {
           return (
             <div>
-              <Button type="link">详&nbsp;&nbsp;情</Button>
-              <Button type="link" onClick={this.updateProduct(product)}>修&nbsp;&nbsp;改</Button>
+              <Button size="large" type="link" onClick={this.showDetail(product)}>详&nbsp;&nbsp;情</Button>
+              <Button size="large" type="link" onClick={this.updateProduct(product)}>修&nbsp;&nbsp;改</Button>
             </div>
           )
         }
