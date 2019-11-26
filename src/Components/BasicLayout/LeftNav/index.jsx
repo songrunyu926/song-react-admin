@@ -76,7 +76,9 @@ class LeftNav extends Component {
 
 
   render() {
-    const {pathname} = this.props.location
+    let {pathname} = this.props.location
+
+    pathname = pathname.startsWith("/product") ? "/product" : pathname;
     //调用方法
     const openKey = this.findOpenKey(menus,pathname)
 

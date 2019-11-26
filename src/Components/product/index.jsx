@@ -8,7 +8,8 @@ class Product extends Component {
 
   state = {
     list: [],
-    total: 0
+    total: 0,
+    product: {}
   }
 
   getProduct = async (pageNum,pageSize) => {
@@ -23,6 +24,16 @@ class Product extends Component {
     this.props.history.push('/product/add')
   }
 
+  //修改商品信息按钮的点击事件
+  updateProduct = product => {
+    return () => {
+      this.setState({
+        product
+      })
+      //需要跳转
+      this.props.history.push('/product/update')
+    }
+  }
 
   componentDidMount() {
     //发送请求 请求商品数据
@@ -59,11 +70,11 @@ class Product extends Component {
       },
       {
         title: '操作',
-        render: () => {
+        render: product => {
           return (
             <div>
               <Button type="link">详&nbsp;&nbsp;情</Button>
-              <Button type="link">修&nbsp;&nbsp;改</Button>
+              <Button type="link" onClick={this.updateProduct(product)}>修&nbsp;&nbsp;改</Button>
             </div>
           )
         }

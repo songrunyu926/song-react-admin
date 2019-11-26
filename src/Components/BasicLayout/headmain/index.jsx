@@ -73,7 +73,7 @@ class HeadMain extends Component {
     for (let i = 0; i < menus.length; i++) {
       const menu = menus[i];
       if(menu.children){
-        const cMenu = menu.children.find(cMenu => cMenu.path === pathname)
+        const cMenu = menu.children.find(cMenu => pathname.startsWith(cMenu.path))
         if(cMenu){
           title = cMenu.title
           break;
@@ -86,9 +86,7 @@ class HeadMain extends Component {
       }     
     }
 
-    if(/^\/product/.test(pathname)){
-      title = "product"
-    }
+ 
     
     return {
       pathname,

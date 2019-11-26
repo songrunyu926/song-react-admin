@@ -6,13 +6,12 @@ import BraftEditor from 'braft-editor'
 import { reqAddProduct } from '../../../api/'
 // 引入编辑器样式
 import 'braft-editor/dist/index.css'
-import './index.less'
 
 const { Item } = Form
 
 @Form.create()
 @connect(state => ({ categories: state.categories }), { getCategoriesAsync })
-class AddProductForm extends Component {
+class UpdateProductForm extends Component {
 
   state = {
     // 创建一个空的editorState作为初始值
@@ -30,7 +29,7 @@ class AddProductForm extends Component {
     }
   };
 
-  AddProductSubmit = e => {
+  updateProductSubmit = e => {
 
     e.preventDefault()
 
@@ -70,7 +69,7 @@ class AddProductForm extends Component {
       <Card title={
         <div>
           <Icon type="arrow-left" style={{ cursor: 'pointer' }} onClick={ this.goBack }/>
-          &nbsp;&nbsp;添加商品
+          &nbsp;&nbsp;修改商品
         </div>
       } >
         <Form onSubmit={this.AddProductSubmit}>
@@ -149,4 +148,4 @@ class AddProductForm extends Component {
   }
 }
 
-export default AddProductForm
+export default UpdateProductForm

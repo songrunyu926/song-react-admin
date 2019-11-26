@@ -5,6 +5,7 @@ import NotMatch from '../Components/notmatch'
 import Categories from '../containers/categories'
 import Product from '../Components/product'
 import AddProductForm  from '../Components/product/add-product-form'
+import UpdateProductForm from '../Components/product/update-product-form'
 
 
 
@@ -27,6 +28,11 @@ export const AuthRoutes = [
   {
     path: '/product/add',
     component: AddProductForm,
+    exact: true
+  },
+  {
+    path: '/product/update',
+    component: UpdateProductForm,
     exact: true
   },
   {

@@ -19,27 +19,27 @@ class Categories extends Component {
     category: {}
   }
 
-  //删除分类模态框显示
-  removeCategoryVisible = (remove_id) => {
-    this.setState({
-      removeCategoryVisible: true,
-      remove_id
-    })
-  }
-
-  //取消删除分类模态框显示
-  removeHidden = () => {
-    this.setState({
-      removeCategoryVisible: false
-    })
-  }
-
-  //确认删除分类
-  removeCategory = async () => {
-    await this.props.removeCategoryAsync(this.state.remove_id)
-    message.success('删除分类成功')
-    this.removeHidden()
-  }
+  //删除分类
+  delCategory = category => {
+    return () => {
+      Modal.confirm({
+        title: (
+          <span>
+            您确认要删除
+            <span style={{ color: "red", fontWeight: "bold" }}>
+              {category.name}
+            </span>
+            分类数据吗？
+          </span>
+        ),
+        okText: '确认删除',
+        cancelText: '取消',
+        onOk: () => {
+          this.props.removeCategoryAsync(category._id);
+        }
+      });
+    };
+  };
 
   //显示添加分类模态框
   addCategoryVisible = () => {
@@ -126,7 +126,7 @@ class Categories extends Component {
         render: category => {
           return <div>
             <Button type="link" onClick={this.updateCategoryVisible.bind(null,category)}>{this.props.t('category.amendSort')}</Button>
-            <Button type="danger" onClick={this.removeCategoryVisible.bind(null,category._id)}>{this.props.t('category.deleteSort')}</Button>
+            <Button type="danger" onClick={this.delCategory(category)}>{this.props.t('category.deleteSort')}</Button>
           </div>
         }
       }
@@ -179,22 +179,7 @@ class Categories extends Component {
           <UpdateCategoryForm categoryName={category.name} wrappedComponentRef={(form) => this.updateForm = form} />
         </Modal>
 
-        <Modal
-          title="删除分类"
-          visible={this.state.removeCategoryVisible}
-          okText='确认删除'
-          cancelText='取消'
-          okType='danger'
-          onOk={this.removeCategory}
-          onCancel={this.removeHidden}
-          width={400}
-        >
-           
-            您确认要删除            
-              {category.name}
-            分类数据吗？
-  
-        </Modal>
+        
       </div>
     )
   }
