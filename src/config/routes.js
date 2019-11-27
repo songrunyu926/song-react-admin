@@ -6,6 +6,7 @@ import Categories from '../containers/categories'
 import Product from '../Components/product'
 import ProductForm  from '../Components/product/product-form'
 import ProductDetail from '../Components/product/product-detail'
+import User from '../containers/user'
 
 
 
@@ -38,6 +39,11 @@ export const AuthRoutes = [
   {
     path: '/product/:id',
     component: ProductDetail,
+    exact: true
+  },
+  {
+    path: '/user',
+    component: User,
     exact: true
   },
   {

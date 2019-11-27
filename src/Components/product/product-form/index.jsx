@@ -15,7 +15,6 @@ const { Item } = Form
 class ProductForm extends Component {
 
   state = {
-    // 创建一个空的editorState作为初始值
     product: null
   }
   //编辑器的方法

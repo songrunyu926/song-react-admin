@@ -124,3 +124,21 @@ export const reqChangeProductStatus = (productId, status) => axiosInstance({
   }
 })
 
+
+//获取用户信息
+export const reqGetUser = () => axiosInstance({
+  method: 'GET',
+  url: 'user/get'
+})
+
+//发送搜索请求
+export const reqSearchProduct = ({searchType, searchValue, pageNum, pageSize}) => axiosInstance({
+  method: 'GET',
+  url: 'product/search',
+  params: {
+    pageSize,
+    pageNum,
+    [searchType]: searchValue
+  }
+})
+
