@@ -23,8 +23,8 @@ class Login extends Component {
 
     if(!value){
       callback(`${name}不能为空`)
-    }else if(value.length <= 4){
-      callback(`${name}必须大于4位`)
+    }else if(value.length <= 3){
+      callback(`${name}必须大于3位`)
     }else if(value.length > 13){
       callback(`${name}必须小于13位`)
     }else if(!/\w/.test(value)){

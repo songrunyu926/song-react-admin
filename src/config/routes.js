@@ -7,6 +7,7 @@ import Product from '../Components/product'
 import ProductForm  from '../Components/product/product-form'
 import ProductDetail from '../Components/product/product-detail'
 import User from '../containers/user'
+import Role from '../containers/role'
 
 
 
@@ -44,6 +45,11 @@ export const AuthRoutes = [
   {
     path: '/user',
     component: User,
+    exact: true
+  },
+  {
+    path: '/role',
+    component: Role,
     exact: true
   },
   {

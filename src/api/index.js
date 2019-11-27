@@ -125,12 +125,6 @@ export const reqChangeProductStatus = (productId, status) => axiosInstance({
 })
 
 
-//获取用户信息
-export const reqGetUser = () => axiosInstance({
-  method: 'GET',
-  url: 'user/get'
-})
-
 //发送搜索请求
 export const reqSearchProduct = ({searchType, searchValue, pageNum, pageSize}) => axiosInstance({
   method: 'GET',
@@ -141,4 +135,63 @@ export const reqSearchProduct = ({searchType, searchValue, pageNum, pageSize}) =
     [searchType]: searchValue
   }
 })
+
+//获取角色信息
+export const reqGetRole = () => axiosInstance({
+  method: 'GET',
+  url: 'role/get'
+})
+
+//添加角色信息
+export const reqAddRole = name => axiosInstance({
+  method: 'POST',
+  url: 'role/add',
+  data: {
+    name
+  }
+})
+
+//更新角色信息
+export const reqUpdateRole = ({roleId, authName, menus}) => axiosInstance({
+  method: 'POST',
+  url: 'role/update',
+  data: {
+    roleId,
+    menus,
+    authName   
+  }
+})
+
+
+//获取用户信息
+export const reqGetUser = () => axiosInstance({
+  method: 'GET',
+  url: 'user/get'
+})
+
+//添加用户信息
+export const reqAddUser = ({username, password, phone, email, roleId}) => axiosInstance({
+  method: 'POST',
+  url: 'user/add',
+  data: {
+    username,
+    password,
+    phone,
+    email,
+    roleId
+  }
+})
+
+//删除用户信息
+export const reqDelUser = (username) => axiosInstance({
+  method: 'POST',
+  url: 'user/delete',
+  data: {
+    username
+  }
+})
+
+
+
+
 
