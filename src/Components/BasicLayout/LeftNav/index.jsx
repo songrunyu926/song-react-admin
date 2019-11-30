@@ -3,6 +3,7 @@ import { Menu, Icon } from 'antd';
 import logo from '../../../assets/logo.png'
 import { Link, withRouter } from 'react-router-dom'
 import { withTranslation } from 'react-i18next'
+import withErrorBoundary from '../../../containers/error-boundary/'
 
 //权限管理 数据在redux中
 import { connect } from 'react-redux'
@@ -12,6 +13,7 @@ import './index.less'
 import menus from '../../../config/menus'
 const { SubMenu } = Menu;
 
+@withErrorBoundary
 @withTranslation()
 @withRouter
 @connect(state => ({ menus: state.user.user.menus }), null)
@@ -87,14 +89,20 @@ class LeftNav extends Component {
       //权限菜单中没有子路由 找不到返回-1
       //不修改原数据
       let newMenus = { ...menu }
-      if (authmenus.indexOf(menu.path) !== -1) {
+      if (authmenus.indexOf(menu.path) === -1) {
+
+        if (menu.children) {
+          newMenus.children = menu.children.filter(cMenu => authmenus.indexOf(cMenu.path) !== -1)
+          if(newMenus.children.length){
+            return [...p, newMenus]
+          }
+        }
+        
+      } else {
         //找到就直接返回
         return [...p, menu]
-      } 
-      if (menu.children) {
-        newMenus.children = menu.children.filter(cMenu => authmenus.indexOf(cMenu.path) !== -1)
-        return [...p, newMenus]
       }
+     
       return p
     }, [])
 

@@ -7,13 +7,18 @@ import { removeItem } from '../../../utils/storage'
 import { removeUser } from '../../../redux/action-creators/user'
 import { withRouter } from 'react-router-dom'
 import dayjs from 'dayjs'
+//这里要修改语言状态
+import { setLangSuccess } from '../../../redux/action-creators/lang'
+//引入错误边界高阶组件
+import withErrorBoundary from '../../../containers/error-boundary/'
 
 import menus from '../../../config/menus'
 
 import './index.less'
 
+@withErrorBoundary
 @withRouter
-@connect((state) => ({ username: state.user.user.username }), { removeUser })
+@connect((state) => ({ username: state.user.user.username }), { removeUser,setLangSuccess })
 @withTranslation()
 class HeadMain extends Component {
 
@@ -29,8 +34,6 @@ class HeadMain extends Component {
   logout = () => {
     Modal.confirm({
       title: '您确认要退出登录么?',
-      okText: '确认退出',
-      cancelText: '取消',
       onOk: () => {
         //清空数据 跳转
         removeItem('user')
@@ -59,6 +62,7 @@ class HeadMain extends Component {
       isChinese
     });
     this.props.i18n.changeLanguage(isChinese ? "zh" : "en");
+    this.props.setLangSuccess(isChinese ? "zh" : "en")
   };
 
   static getDerivedStateFromProps(nextProp, prevState) {

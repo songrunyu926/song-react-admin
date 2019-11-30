@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form, Input, Tree } from "antd";
 import PropTypes from 'prop-types'
+import { withTranslation } from 'react-i18next'
 
 import menus from '../../../config/menus'
 
@@ -10,7 +11,7 @@ const { TreeNode } = Tree;
 
 const treeData = [
   {
-    title: '平台权限',
+    title: 'root',
     key: '0',
     children: menus.map(menu => {
       if(menu.children){
@@ -29,6 +30,7 @@ const treeData = [
   }
 ]
 
+@withTranslation()
 @Form.create()
 class UpdateRoleForm extends Component {
 
@@ -44,27 +46,30 @@ class UpdateRoleForm extends Component {
   };
 
 
-  onCheck = checkedKeys => {
-    console.log("onCheck", checkedKeys);
-    this.setState({ checkedKeys });
-  };
+  // onCheck = checkedKeys => {
+  //   console.log("onCheck", checkedKeys);
+  //   this.setState({ checkedKeys });
+  // };
 
-  onSelect = (selectedKeys, info) => {
-    console.log("onSelect", info);
-    this.setState({ selectedKeys });
-  };
+  // onSelect = (selectedKeys, info) => {
+  //   console.log("onSelect", info);
+  //   this.setState({ selectedKeys });
+  // };
 
-  renderTreeNodes = data =>
-    data.map(item => {
+  renderTreeNodes = data => {
+    const { t } = this.props
+    return data.map(item => {
       if (item.children) {
         return (
-          <TreeNode title={item.title} key={item.key} dataRef={item}>
+          <TreeNode title={t('route.' + item.title)} key={item.key} dataRef={item}>
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode {...item} />;
+      return <TreeNode  title={t('route.' + item.title)} key={item.key} />;
     });
+  }
+    
 
   render() {
     const { form: {getFieldDecorator}, role: {name, menus}} = this.props;

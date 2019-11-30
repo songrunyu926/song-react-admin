@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Card, Button, Table, Modal, message } from "antd";
-import { reqGetUser, reqAddUser, reqDelUser } from "../../api"
+import { reqGetUser, reqAddUser, reqDelUser, reqUpdateUser } from "../../api"
 import { connect } from 'react-redux'
 import { getRoleAsync } from '../../redux/action-creators/role'
 import dayjs from "dayjs";
@@ -48,7 +48,7 @@ class User extends Component {
       render: user => {
         return (
           <div>
-            <Button type="link" onClick={() => { }}>
+            <Button type="link" onClick={this.showUpdate(user)}>
               修改
             </Button>
             <Button type="link" onClick={this.delUser(user)}>
@@ -59,6 +59,16 @@ class User extends Component {
       }
     }
   ];
+
+  //展示更新用户模态框
+  showUpdate = user => {
+    return () => {
+      this.setState({
+        updateUserModalVisible: true,
+        user
+      })
+    }
+  }
 
   //展示用户数据
   componentDidMount() {
@@ -97,8 +107,29 @@ class User extends Component {
     })
   };
 
-  // 更新用户的回调函数
+  //更新用户的回调函数
   updateUser = () => {
+      //获取到修改的表单
+      const { validateFields, resetFields } = this.updateUserForm.props.form
+      validateFields(async (err, values) => {
+        if (!err) {
+          
+          console.log(33333333333)
+          //获取表单数据
+          const { password } = values
+          console.log(password)
+          //获取username
+          const { username } = this.state.user
+          //发送请求
+          await reqUpdateUser(username, password)
+          //成功后
+          message.success(username + '密码修改成功！')
+          resetFields()
+          this.setState({
+            updateUserModalVisible: false
+          })
+        }
+      })   
   };
 
   //删除用户的回调
@@ -112,12 +143,12 @@ class User extends Component {
             <span style={{ color: "red", fontWeight: "bold" }}>
               {username}
             </span>
-             用户数据吗？
+            用户数据吗？
           </span>
         ),
         okText: '确认删除',
         cancelText: '取消',
-        onOk:async () => {
+        onOk: async () => {
           await reqDelUser(username);
           //更新状态
           this.setState({
@@ -137,6 +168,7 @@ class User extends Component {
     };
   };
 
+  
   render() {
     const { users, addUserModalVisible, updateUserModalVisible } = this.state;
     return (

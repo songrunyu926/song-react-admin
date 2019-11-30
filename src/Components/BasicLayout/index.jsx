@@ -7,6 +7,7 @@ import HeadMain from './headmain/'
 import { Route, Switch } from 'react-router-dom'
 import { AuthRoutes } from '../../config/routes'
 import { connect } from 'react-redux'
+import ThemePicker from './theme-picker';
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -56,6 +57,7 @@ class BasicLayout extends Component {
           </Content>
           <Footer style={{ textAlign: 'center' }}>后台管理系统</Footer>
         </Layout>
+        <ThemePicker />
       </Layout>
     );
   }

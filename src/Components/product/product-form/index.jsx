@@ -41,6 +41,7 @@ class ProductForm extends Component {
         const { name, desc, categoryId, price, editorState } = values
         //富文本编辑器的内容 
         const detail = editorState.toHTML()
+        console.log(detail)
 
         const { state,pathname } = this.props.location
         let content = '添加'

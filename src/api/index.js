@@ -162,6 +162,15 @@ export const reqUpdateRole = ({roleId, authName, menus}) => axiosInstance({
   }
 })
 
+//删除角色信息
+export const reqRemoveRole = (roleId) => axiosInstance({
+  method: 'POST',
+  url: 'role/delete',
+  data: {
+    roleId
+  }
+})
+
 
 //获取用户信息
 export const reqGetUser = () => axiosInstance({
@@ -188,6 +197,16 @@ export const reqDelUser = (username) => axiosInstance({
   url: 'user/delete',
   data: {
     username
+  }
+})
+
+//修改用户请求
+export const reqUpdateUser = (username, password) => axiosInstance({
+  method: 'POST',
+  url: 'user/update',
+  data: {
+    username,
+    password
   }
 })
 

@@ -158,8 +158,6 @@ class Categories extends Component {
         <Modal
           title="添加分类"
           visible={this.state.addCategoryVisible}
-          okText='确认添加'
-          cancelText='取消'
           onOk={this.addCategory}
           onCancel={this.hidden}
           width={400}
@@ -170,8 +168,6 @@ class Categories extends Component {
         <Modal
           title="修改分类"
           visible={this.state.updateCategoryVisible}
-          okText='确认修改'
-          cancelText='取消'
           onOk={this.updateCategory}
           onCancel={this.updateHidden}
           width={400}

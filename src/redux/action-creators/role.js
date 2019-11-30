@@ -1,5 +1,5 @@
-import { reqGetRole, reqAddRole, reqUpdateRole } from '../../api'
-import { GET_ROLE, ADD_ROLE, UPDATE_ROLE } from '../action-types/role'
+import { reqGetRole, reqAddRole, reqUpdateRole, reqRemoveRole } from '../../api'
+import { GET_ROLE, ADD_ROLE, UPDATE_ROLE, REMOVE_ROLE } from '../action-types/role'
 
 //获取角色信息的create action方法
 const getRole = roles => {
@@ -43,5 +43,20 @@ export const updateRoleAsync = ({roleId, authName, menus}) => {
   return dispatch => {
     return reqUpdateRole({roleId, authName, menus})
               .then(res => dispatch(updateRole(res)))
+  }
+}
+
+//删除角色
+const removeRole = roleId => {
+  return {
+    type: REMOVE_ROLE,
+    data: roleId
+  }
+}
+
+export const removeRoleAsync = roleId => {
+  return dispatch => {
+    return reqRemoveRole(roleId)
+              .then(res => dispatch(removeRole(res)))
   }
 }

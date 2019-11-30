@@ -5,12 +5,12 @@ import dayjs from 'dayjs'
 import AddRoleForm from "./add-role-form";
 import UpdateRoleForm from "./update-role-form";
 
-import { getRoleAsync, addRoleAsync, updateRoleAsync } from "../../redux/action-creators/role"
+import { getRoleAsync, addRoleAsync, updateRoleAsync, removeRoleAsync } from "../../redux/action-creators/role"
 import { connect } from 'react-redux'
 
 const RadioGroup = Radio.Group;
 
-@connect(state => ({ roles: state.roles, username: state.user.user.username }), { getRoleAsync, addRoleAsync, updateRoleAsync })
+@connect(state => ({ roles: state.roles, username: state.user.user.username }), { getRoleAsync, addRoleAsync, updateRoleAsync, removeRoleAsync })
 class Role extends Component {
   state = {
     value: "", //单选的默认值，也就是选中的某个角色的id值
@@ -107,6 +107,29 @@ class Role extends Component {
       this.props.getRoleAsync()
     }
   }
+  //删除角色信息 
+  removeRole = role => {
+    return () => {
+      const { name, _id } = role
+      Modal.confirm({
+        title: (
+          <span>
+            您确认要删除
+            <span style={{ color: "red", fontWeight: "bold" }}>
+              {name}
+            </span>
+            角色数据吗？
+          </span>
+        ),
+        okText: '确认删除',
+        cancelText: '取消',
+        onOk: async () => {
+          await this.props.removeRoleAsync(_id)
+          message.success(`${name} 删除成功`)
+        }
+      });
+    }
+  }
 
   render() {
     const {
@@ -120,7 +143,6 @@ class Role extends Component {
 
     //根据value的值去找角色信息
     const role = roles.find(role => role._id === value)
-
 
     return (
       <Card
@@ -139,6 +161,14 @@ class Role extends Component {
               onClick={this.switchModal("updateRoleModalVisible", true)}
             >
               设置角色权限
+            </Button>
+            &nbsp;&nbsp;
+            <Button
+              type="primary"
+              disabled={isDisabled}
+              onClick={this.removeRole(role)}
+            >
+              删除角色
             </Button>
           </div>
         }

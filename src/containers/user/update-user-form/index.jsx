@@ -1,41 +1,54 @@
-import React, { Component } from "react";
-import { Form, Input, Select } from "antd";
+import React, { Component } from 'react';
+import { Form, Input } from 'antd';
 
 const Item = Form.Item;
-const Option = Select.Option;
 
 @Form.create()
 class UpdateUserForm extends Component {
-  render() {
-    const { getFieldDecorator } = this.props.form;
+
+  render () {
+    const { form : { getFieldDecorator } } = this.props;
 
     return (
-      <Form labelCol={{ span: 6 }} wrapperCol={{ span: 15 }}>
-        <Item label="用户名">
-          {getFieldDecorator("username", { initialValue: "" })(
-            <Input placeholder="请输入用户名" />
-          )}
+      <Form>
+        <Item label='密码' labelCol={{span: 6}}  wrapperCol={{span: 15}}>
+          {
+            getFieldDecorator(
+              'password',
+              {
+                rules: [
+                  {
+                    required: true, message: '必须输入内容',
+                  },
+                  {
+                    min: 4, message: '最小不能小于4位'
+                  }
+                ]
+              }
+            )(
+              <Input placeholder='请输入密码' type='password'/>
+            )
+          }
         </Item>
-        <Item label="手机号">
-          {getFieldDecorator("phone", { initialValue: "" })(
-            <Input placeholder="请输入手机号" />
-          )}
-        </Item>
-        <Item label="邮箱">
-          {getFieldDecorator("email", { initialValue: "" })(
-            <Input placeholder="请输入邮箱" />
-          )}
-        </Item>
-        <Item label="角色">
-          {getFieldDecorator("roleId")(
-            <Select placeholder="请选择分类">
-              <Option value="1">1</Option>
-              <Option value="2">2</Option>
-            </Select>
-          )}
+        <Item label='确认密码' labelCol={{span: 6}}  wrapperCol={{span: 15}}>
+          {
+            getFieldDecorator(
+              'rePassword',
+              {
+                rules: [
+                  {required: true, message: '必须输入内容'},
+                  {
+                    min: 4, message: '最小不能小于4位'
+                  }
+                ]
+              }
+            )(
+              <Input placeholder='请确认密码' type='password'/>
+            )
+          }
         </Item>
       </Form>
-    );
+    )
   }
 }
 

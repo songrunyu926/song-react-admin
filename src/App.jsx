@@ -10,6 +10,8 @@ import history from './utils/history'
 import { noAuthRoutes } from './config/routes'
 import { Spin } from 'antd'
 
+
+
 export default class App extends Component {
   render() {
     return (
@@ -19,9 +21,7 @@ export default class App extends Component {
         {
           noAuthRoutes.map((route, index) => <Route {...route} key={index}/>)
         }
-        <BasicLayout>
-        
-        </BasicLayout>
+        <BasicLayout />
         </Switch>
       </Router>
       </Suspense>

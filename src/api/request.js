@@ -8,7 +8,7 @@ import history from '../utils/history'
 
 //使用axios.create方法 创建一个axios对象 里面可以配置一些公共配置
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: '/api',
   timeout: 10000, //发送请求的限制时间
   headers: {
     //公共的请求头
